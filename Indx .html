@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Inventurprogramm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input [type="text"], input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="text"] { flex: 2; }
+        input[type="number"] { flex: 1; }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #218838; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th { background-color: #007bff; color: white; }
+        .delete-btn {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .delete-btn:hover { background-color: #bd2130; }
+    </style>
+</head>
+<body>
+
+    <h1>📦 Lager-Inventur</h1>
+
+    <div class="form-group">
+        <input type="text" id="artikelName" placeholder="Artikelname (z.B. Laptops)">
+        <input type="number" id="artikelMenge" placeholder="Menge" min="0" value="1">
+        <button onclick="artikelHinzufuegen()">Hinzufügen</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Artikel</th>
+                <th>Menge</th>
+                <th>Aktion</th>
+            </tr>
+        </thead>
+        <tbody id="inventurListe">
+            </tbody>
+    </table>
+
+    <script>
+        function artikelHinzufuegen() {
+            // Werte aus den Eingabefeldern holen
+            const nameInput = document.getElementById('artikelName');
+            const mengeInput = document.getElementById('artikelMenge');
+            
+            const name = nameInput.value.trim();
+            const menge = mengeInput.value;
+
+            // Validierung: Wenn der Name leer ist, mach nichts
+            if (name === '') {
+                alert('Bitte einen Artikelnamen eingeben!');
+                return;
+            }
+
+            // Tabelle anvisieren
+            const liste = document.getElementById('inventurListe');
+
+            // Neue Tabellenzeile erstellen
+            const zeile = document.createElement('tr');
+
+            zeile.innerHTML = `
+                <td>${name}</td>
+                <td>${menge}</td>
+                <td><button class="delete-btn" onclick="zeileLoeschen(this)">Löschen</button></td>
+            `;
+
+            // Zeile zur Tabelle hinzufügen
+            liste.appendChild(zeile);
+
+            // Felder nach dem Hinzufügen wieder leeren
+            nameInput.value = '';
+            mengeInput.value = '1';
+        }
+
+        function zeileLoeschen(button) {
+            // Entfernt die Zeile, in der sich der geklickte Button befindet
+            const zeile = button.parentElement.parentElement;
+            zeile.remove();
+        }
+    </script>
+
+</body>
+</html>
